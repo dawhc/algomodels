@@ -51,6 +51,12 @@ _ll get_comb(_ll n, _ll m, _ll mod) {
 	return (frac[n] * inv[m] % mod) * inv[n - m] % mod;
 }
 
+/**
+Lucas law:
+C(n, m) % p = C(n / p, m / p) * C(n % p, m % p) % p; 
+p is a prime.
+*/
+
 _ll lucas(_ll n, _ll m, _ll mod) {
 	_ll ans = 1ll;
 	init(mod + 10, mod);
@@ -85,6 +91,16 @@ _ll mul(_ll a, _ll b, _ll mod) {//快速乘，计算a*b%p
 	return ret;
 }
 
+/**
+x = a_1 (mod m_1)
+x = a_2 (mod m_2)
+...
+x = a_n (mod m_n)
+x = \Sigma{a_i * M_i * y_i} mod M
+M = \Pi{m_i}
+M_i = M / m_i
+y_i * M_i = 1 (mod M)
+*/ 
 _ll crt(_ll n, _ll m) {
 	_ll ret = 0, lcm = 1ll;
 	for (int i = 1; i <= p[0]; i++) lcm *= p[i];

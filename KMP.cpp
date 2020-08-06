@@ -1,9 +1,10 @@
 // KMP algorithm
 #include<cstdio>
-#include<string>
-#define MAXN 1100
-#define gets gets_s
+#include<cstring>
+#define MAXN 1100000
+//#define gets gets_s
 
+int T, cnt;
 int nxt[MAXN];
 char txt[MAXN], st[MAXN];
 
@@ -11,31 +12,40 @@ void getNext(char *, int *);
 void find(char *, char *, int *);
 
 int main() {
-	gets(txt);
-	gets(st);
-	getNext(st, nxt);
-	find(txt, st, nxt);
+	scanf("%d", &T);
+	while(T--) {
+		cnt = 0;
+		memset(nxt, 0, sizeof(nxt));
+		scanf("%s%s", st, txt);
+		getNext(st, nxt);	
+		find(txt, st, nxt);
+		printf("%d\n", cnt);
+	}
 	return 0;
 }
 
 void getNext(char *st, int *nxt) {
-	int i = 0;
 	int len = strlen(st);
-	for (int j = 1; j < len; j++)
-		if (st[i] == st[j]) {
-			i++;
-			nxt[j] = i;
-		}
-		else i = nxt[i];
+	nxt[0] = -1;
+	for (int i = 0, j = -1; i < len; ) {
+		if (j == -1 || st[i] == st[j]) 
+			nxt[++i] = ++j;
+		else
+			j = nxt[j];
+	}
 }
 
 void find(char *txt, char *st, int *nxt) {
 	int len_txt = strlen(txt);
 	int len_st = strlen(st);
-	int j = 0;
-	for (int i = 0; i < len_txt; i++) {
-		while (j && txt[i] != st[j]) j = nxt[j-1];
-		if (st[j] == txt[i]) j++;
-		if (j == len_st) printf("%d\n", i);
+	for (int i = 0, j = 0; i < len_txt; ) {
+		if (j == -1 || txt[i] == st[j]) { 
+			++i; ++j;
+			if (j == len_st) {
+				++cnt;
+				j = nxt[j];
+			}
+		}
+		else j = nxt[j];
 	}
 }

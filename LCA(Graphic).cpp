@@ -29,8 +29,8 @@ public:
 		clear();
 	}
 	~Graphic() {
-		delete edge;
-		delete first;
+		delete[] edge;
+		delete[] first;
 	}
 	void clear() {
 		e_cnt = 0;
